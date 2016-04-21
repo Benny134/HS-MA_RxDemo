@@ -1,5 +1,6 @@
 package de.hs_mannheim.demo.benny.rxdemo;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,64 +21,20 @@ import rx.android.widget.WidgetObservable;
 import rx.functions.Action1;
 
 public class MainActivity extends AppCompatActivity {
-    List<String> fruits = new ArrayList<>();
-    List<String> suggestions = new ArrayList<>();
+    private List<String> fruits = new ArrayList<>();
+    private List<String> suggestions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        createExampleData();
-
-        ListView autoCompletionSuggestions = (ListView) findViewById(R.id.listView);
-        autoCompletionSuggestions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ((EditText) findViewById(R.id.txtAutoCompletion)).setText(((TextView)view).getText());
-            }
-        });
-
-        autoCompletionSuggestions.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, suggestions));
-
-        Observable<OnTextChangeEvent> autoCompletion = WidgetObservable.text((EditText) findViewById(R.id.txtAutoCompletion));
-
-        autoCompletion
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<OnTextChangeEvent>() {
-                    @Override
-                    public void call(OnTextChangeEvent onTextChangeEvent) {
-                        search(onTextChangeEvent.text().toString());
-                    }
-                });
     }
 
-    private void createExampleData(){
-        fruits.add("Trauben");
-        fruits.add("Apfel");
-        fruits.add("Äpfel");
-        fruits.add("Bananen");
-        fruits.add("Birnen");
-        fruits.add("Tomaten");
+    public void onClickObserverDemo(View view){
+        startActivity(new Intent(this, ObserverActivity.class));
     }
 
-    private void search(String text){
-        ListView autoCompletionSuggestions = (ListView) findViewById(R.id.listView);
-
-        if (text.isEmpty()){
-            suggestions.clear();
-            ((ArrayAdapter<String>)autoCompletionSuggestions.getAdapter()).notifyDataSetChanged();
-            return;
-        }
-
-        suggestions.clear();
-        for(String s : fruits){
-            if(s.toLowerCase().contains(text.toLowerCase())){
-                suggestions.add(s);
-            }
-        }
-
-        ((ArrayAdapter<String>)autoCompletionSuggestions.getAdapter()).notifyDataSetChanged();
+    public void onClickCacheDemo(View view){
+        startActivity(new Intent(MainActivity.this, CacheActivity.class));
     }
 }
