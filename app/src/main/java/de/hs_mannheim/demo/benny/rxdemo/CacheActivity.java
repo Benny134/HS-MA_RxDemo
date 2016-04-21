@@ -2,6 +2,7 @@ package de.hs_mannheim.demo.benny.rxdemo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,51 +22,63 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.android.widget.OnTextChangeEvent;
 import rx.android.widget.WidgetObservable;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import rx.schedulers.TimeInterval;
 
 public class CacheActivity extends AppCompatActivity {
-    private ArrayList<Long> data = new ArrayList<>();
-    private ArrayList<Long> cache = new ArrayList<>();
+    private ArrayList<Integer> data = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cache);
 
-        initSuggestionsView();
-        initObserver();
+        initListView();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         refresh();
     }
 
-    private void initSuggestionsView(){
+    private void initListView(){
         ListView autoCompletionSuggestions = (ListView) findViewById(R.id.lstCachingItems);
 
-        autoCompletionSuggestions.setAdapter(new ArrayAdapter<Long>(this, android.R.layout.simple_list_item_1, android.R.id.text1, data));
-    }
-
-    private void initObserver(){
-        for(int i = 0; i < 100; i++){
-            cache.add((long)(Math.random() * 100));
-        }
-
-        Observable<Long> cachingObserver = Observable.from(data);
+        autoCompletionSuggestions.setAdapter(new ArrayAdapter<Integer>(this, android.R.layout.simple_list_item_1, android.R.id.text1, data));
     }
 
     public void onClickRefresh(View view){
         refresh();
     }
 
-    public void refresh(){
-        ToggleButton toggleButton = (ToggleButton) findViewById(R.id.tglWithCaching);
-        data.clear();
-        if(toggleButton.isChecked()){
-            data.addAll(cache);
-        }else{
-            for(int i = 0; i < 100; i++){
-                data.add((long)(Math.random() * 100));
-            }
-        }
+    public void onClickInvalidCache(View view){
+        Cache.getInstance().invalidCache();
+    }
 
-        ((ArrayAdapter<String>)((ListView)findViewById(R.id.lstCachingItems)).getAdapter()).notifyDataSetChanged();
+    public void refresh(){
+        data.clear();
+        final ArrayAdapter<String> arrayAdapter = ((ArrayAdapter<String>)((ListView)findViewById(R.id.lstCachingItems)).getAdapter());
+
+        Cache.getInstance().getCache()
+                .switchIfEmpty(NetworkCaller.getInstance().requestApi())
+                .onBackpressureBuffer(200)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Integer>() {
+                    @Override
+                    public void onCompleted() {}
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("Observable", e.toString());
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        data.add(integer);
+                        arrayAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 }

@@ -9,23 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="de.hs_mannheim.demo.benny.rxdemo.CacheActivity">
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New ToggleButton"
-        android:id="@+id/tglWithCaching"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Caching"
-        android:id="@+id/lblCache"
-        android:layout_alignBottom="@+id/tglWithCaching"
-        android:layout_alignParentStart="true" />
-
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,5 +24,15 @@
         android:id="@+id/lstCachingItems"
         android:layout_below="@+id/btnRefresh"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cache Leeren"
+        android:id="@+id/btnInvalidCache"
+        android:layout_alignTop="@+id/btnRefresh"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/btnRefresh"
+        android:onClick="onClickInvalidCache" />
 
 </RelativeLayout>
