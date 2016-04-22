@@ -12,8 +12,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Observer Demo"
-        android:id="@+id/btnObserverDemo"
+        android:text="Event Demo"
+        android:id="@+id/btnEventDemo"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="Cache Demo"
         android:id="@+id/btnCacheDemo"
-        android:layout_below="@+id/btnObserverDemo"
+        android:layout_below="@+id/btnEventDemo"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:onClick="onClickCacheDemo" />
