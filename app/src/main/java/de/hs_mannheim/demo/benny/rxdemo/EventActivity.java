@@ -49,7 +49,7 @@ public class EventActivity extends AppCompatActivity {
         Observable<OnTextChangeEvent> autoCompletion = WidgetObservable.text((EditText) findViewById(R.id.txtSearchField));
 
         autoCompletion
-                .debounce(500, TimeUnit.MILLISECONDS)
+                .debounce(1000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<OnTextChangeEvent>() {
                     @Override
