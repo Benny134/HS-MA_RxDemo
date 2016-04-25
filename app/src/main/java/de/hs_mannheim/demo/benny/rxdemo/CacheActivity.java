@@ -43,9 +43,9 @@ public class CacheActivity extends AppCompatActivity {
     }
 
     private void initListView(){
-        ListView autoCompletionSuggestions = (ListView) findViewById(R.id.lstCachingItems);
+        ListView cachingItemsList = (ListView) findViewById(R.id.lstCachingItems);
 
-        autoCompletionSuggestions.setAdapter(new ArrayAdapter<Integer>(this, android.R.layout.simple_list_item_1, android.R.id.text1, data));
+        cachingItemsList.setAdapter(new ArrayAdapter<Integer>(this, android.R.layout.simple_list_item_1, android.R.id.text1, data));
     }
 
     public void onClickInvalidCache(View view){
@@ -55,8 +55,6 @@ public class CacheActivity extends AppCompatActivity {
     public void onClickRefresh(View view){
         refresh();
     }
-
-
 
     public void refresh(){
         data.clear();
