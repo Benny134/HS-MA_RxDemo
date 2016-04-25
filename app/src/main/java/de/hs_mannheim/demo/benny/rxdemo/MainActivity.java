@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickObserverDemo(View view){
-        startActivity(new Intent(this, ObserverActivity.class));
+        startActivity(new Intent(this, EventActivity.class));
     }
 
     public void onClickCacheDemo(View view){

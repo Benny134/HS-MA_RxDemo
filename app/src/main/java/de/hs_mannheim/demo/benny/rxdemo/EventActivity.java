@@ -19,14 +19,14 @@ import rx.android.widget.OnTextChangeEvent;
 import rx.android.widget.WidgetObservable;
 import rx.functions.Action1;
 
-public class ObserverActivity extends AppCompatActivity {
+public class EventActivity extends AppCompatActivity {
     private List<String> fruits = new ArrayList<>();
     private List<String> suggestions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_observer);
+        setContentView(R.layout.activity_event);
 
         createExampleData();
         initSuggestionsView();
