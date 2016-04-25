@@ -15,8 +15,7 @@ public class NetworkCaller {
         return ourInstance;
     }
 
-    private NetworkCaller() {
-    }
+    private NetworkCaller() {}
 
     public Observable<Integer> requestApi(){
         final Cache cache = Cache.getInstance();
