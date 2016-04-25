@@ -48,17 +48,19 @@ public class CacheActivity extends AppCompatActivity {
         autoCompletionSuggestions.setAdapter(new ArrayAdapter<Integer>(this, android.R.layout.simple_list_item_1, android.R.id.text1, data));
     }
 
-    public void onClickRefresh(View view){
-        refresh();
-    }
-
     public void onClickInvalidCache(View view){
         Cache.getInstance().invalidCache();
     }
 
+    public void onClickRefresh(View view){
+        refresh();
+    }
+
+
+
     public void refresh(){
         data.clear();
-        final ArrayAdapter<String> arrayAdapter = ((ArrayAdapter<String>)((ListView)findViewById(R.id.lstCachingItems)).getAdapter());
+        final ArrayAdapter<String> cachingItemsAdapter = ((ArrayAdapter<String>)((ListView)findViewById(R.id.lstCachingItems)).getAdapter());
 
         Cache.getInstance().getCache()
                 .switchIfEmpty(NetworkCaller.getInstance().requestApi())
@@ -77,7 +79,7 @@ public class CacheActivity extends AppCompatActivity {
                     @Override
                     public void onNext(Integer integer) {
                         data.add(integer);
-                        arrayAdapter.notifyDataSetChanged();
+                        cachingItemsAdapter.notifyDataSetChanged();
                     }
                 });
     }

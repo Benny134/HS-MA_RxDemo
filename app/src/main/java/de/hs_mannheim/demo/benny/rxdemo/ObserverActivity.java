@@ -34,19 +34,19 @@ public class ObserverActivity extends AppCompatActivity {
     }
 
     private void initSuggestionsView(){
-        ListView autoCompletionSuggestions = (ListView) findViewById(R.id.listView);
-        autoCompletionSuggestions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView suggestionsList = (ListView) findViewById(R.id.lstSuggestions);
+        suggestionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ((EditText) findViewById(R.id.txtAutoCompletion)).setText(((TextView)view).getText());
+                ((EditText) findViewById(R.id.txtSearchField)).setText(((TextView)view).getText());
             }
         });
 
-        autoCompletionSuggestions.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, suggestions));
+        suggestionsList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, suggestions));
     }
 
     private void initObserver(){
-        Observable<OnTextChangeEvent> autoCompletion = WidgetObservable.text((EditText) findViewById(R.id.txtAutoCompletion));
+        Observable<OnTextChangeEvent> autoCompletion = WidgetObservable.text((EditText) findViewById(R.id.txtSearchField));
 
         autoCompletion
                 .debounce(500, TimeUnit.MILLISECONDS)
@@ -57,6 +57,28 @@ public class ObserverActivity extends AppCompatActivity {
                         search(onTextChangeEvent.text().toString());
                     }
                 });
+    }
+
+    private void search(String text){
+        ArrayAdapter<String> suggestionsListAdapter = (ArrayAdapter<String>)((ListView) findViewById(R.id.lstSuggestions)).getAdapter();
+        TextView suggestionInfo = (TextView) findViewById(R.id.lblSuggestionInfo);
+
+        if (text.isEmpty()){
+            suggestions.clear();
+            suggestionsListAdapter.notifyDataSetChanged();
+            suggestionInfo.setText("");
+            return;
+        }
+
+        suggestions.clear();
+        for(String s : fruits){
+            if(s.toLowerCase().contains(text.toLowerCase())){
+                suggestions.add(s);
+            }
+        }
+
+        suggestionsListAdapter.notifyDataSetChanged();
+        suggestionInfo.setText(suggestions.size() + " Treffer");
     }
 
     private void createExampleData(){
@@ -71,27 +93,5 @@ public class ObserverActivity extends AppCompatActivity {
         fruits.add("Pfirsiche");
         fruits.add("Orangen");
         fruits.add("Kiwis");
-    }
-
-    private void search(String text){
-        ListView autoCompletionSuggestions = (ListView) findViewById(R.id.listView);
-        TextView infoSuggestions = (TextView) findViewById(R.id.lblSuggestion);
-
-        if (text.isEmpty()){
-            suggestions.clear();
-            ((ArrayAdapter<String>)autoCompletionSuggestions.getAdapter()).notifyDataSetChanged();
-            infoSuggestions.setText("");
-            return;
-        }
-
-        suggestions.clear();
-        for(String s : fruits){
-            if(s.toLowerCase().contains(text.toLowerCase())){
-                suggestions.add(s);
-            }
-        }
-
-        ((ArrayAdapter<String>)autoCompletionSuggestions.getAdapter()).notifyDataSetChanged();
-        infoSuggestions.setText(suggestions.size() + " Treffer");
     }
 }

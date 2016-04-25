@@ -14,29 +14,29 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/AutoComplete"
-        android:id="@+id/lblAutoCompletion"
+        android:id="@+id/lblSearchTitle"
         android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txtAutoCompletion"
+        android:id="@+id/txtSearchField"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/lblAutoCompletion" />
+        android:layout_toEndOf="@+id/lblSearchTitle" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lblSuggestion"
-        android:layout_below="@+id/txtAutoCompletion"
+        android:id="@+id/lblSuggestionInfo"
+        android:layout_below="@+id/txtSearchField"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@+id/lblSuggestion"
+        android:id="@+id/lstSuggestions"
+        android:layout_below="@+id/lblSuggestionInfo"
         android:layout_alignParentStart="true" />
 </RelativeLayout>
